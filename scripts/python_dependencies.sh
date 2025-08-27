@@ -1,8 +1,4 @@
-# Create a virtual environment
-python3 -m venv myenv
-
-# Activate the virtual environment
-source myenv/bin/activate
-
-# Now install packages safely
-pip3 install -r /home/ubuntu/django-app-v4/requirements.txt
+#!/bin/bash
+python -m venv venv
+source venv/bin/activate
+pip install -r /home/ubuntu/django-app-v4/requirements.txt
