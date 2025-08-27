@@ -20,7 +20,7 @@ hooks:
       timeout: 300
       runas: root
   AfterInstall:
-    - location: scripts/after_install.sh
+    - location: scripts/instance_os_dependencies.sh
       timeout: 300
       runas: ubuntu
     - location: scripts/python_dependencies.sh
