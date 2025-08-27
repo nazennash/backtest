@@ -1,14 +1,8 @@
-#!/bin/bash
+# Create a virtual environment
+python3 -m venv myenv
 
-# sudo apt update
-# sudo apt install python3-full -y
+# Activate the virtual environment
+source myenv/bin/activate
 
-python3 -m venv /home/ubuntu/env
-
-source /home/ubuntu/env/bin/activate
-
-/home/ubuntu/env/bin/pip install --upgrade pip
-
-/home/ubuntu/env/bin/pip install -r /home/ubuntu/django-app-v4/requirements.txt
-
-/home/ubuntu/env/bin/pip install gunicorn
+# Now install packages safely
+pip3 install -r /home/ubuntu/django-app-v4/requirements.txt
