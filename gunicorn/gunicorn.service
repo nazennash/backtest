@@ -8,7 +8,7 @@ User=ubuntu
 Group=www-data
 WorkingDirectory=/home/ubuntu/django-app-v4
 
-ExecStart=/home/ubuntu/django-app-v4/venv/bin/gunicorn \
+ExecStart=/home/ubuntu/env/bin/gunicorn\
           --access-logfile - \
           --workers 3 \
           --bind unix:/run/gunicorn.sock \
