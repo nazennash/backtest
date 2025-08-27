@@ -1,0 +1,197 @@
+/* Section Separator */
+.section-separator {
+    border: none;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #58a6ff, #7c3aed, #58a6ff, transparent);
+    margin: 2rem 0;
+    opacity: 0.6;
+}
+
+/* Backtesting Section Card */
+.backtesting-section-card {
+    background: linear-gradient(135deg, #1a2332 0%, #2d1b69 100%);
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    position: relative;
+}
+
+.backtesting-section-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #7c3aed, #58a6ff, #06d6a0, #ffd23f);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+}
+
+.backtesting-section-card .card-header {
+    background: rgba(124, 58, 237, 0.1);
+    border-bottom: 1px solid #30363d;
+    backdrop-filter: blur(10px);
+}
+
+.backtesting-title-gradient {
+    background: linear-gradient(135deg, #7c3aed, #58a6ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+}
+
+/* Strategy Selection Card */
+.strategy-selection-card, .strategy-parameters-card {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+}
+
+.strategy-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.strategy-option {
+    position: relative;
+}
+
+.strategy-radio {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.strategy-label {
+    display: block;
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    border: 2px solid #475569;
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.strategy-label:hover {
+    border-color: #7c3aed;
+    background: linear-gradient(135deg, #2d1b69 0%, #1e293b 100%);
+}
+
+.strategy-radio:checked + .strategy-label {
+    border-color: #7c3aed;
+    background: linear-gradient(135deg, #2d1b69 0%, #1e293b 100%);
+    box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.3);
+}
+
+.strategy-radio:checked + .strategy-label::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #7c3aed, #a855f7);
+    border-radius: 6px 6px 0 0;
+}
+
+.strategy-name {
+    display: block;
+    color: #e2e8f0;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+}
+
+.strategy-desc {
+    display: block;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* Strategy Parameters */
+.strategy-params {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.no-selection-message {
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+/* Position Direction Styling */
+.position-direction-container {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.position-label {
+    background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+    border: 2px solid #6b7280;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.9rem;
+    min-width: 100px;
+    text-align: center;
+}
+
+.position-label:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.long-label {
+    color: #10b981;
+    border-color: #059669;
+}
+
+.long-label:hover {
+    background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+    border-color: #10b981;
+}
+
+.short-label {
+    color: #f87171;
+    border-color: #dc2626;
+}
+
+.short-label:hover {
+    background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+    border-color: #f87171;
+}
+
+.form-check-input:checked + .long-label {
+    background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+    border-color: #10b981;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+}
+
+.form-check-input:checked + .short-label {
+    background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+    border-color: #f87171;
+    box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.3);
+}
+
+.form-check-input[type=radio] {
+    display: none;
+}
+
+/* Gradient Animation */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}

@@ -1,0 +1,2110 @@
+<!-- Backtesting VIX Trading Strategies Section -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card backtesting-section-card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <span class="backtesting-title-gradient">Backtesting VIX Trading Strategies</span>
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="text-light mb-3">
+                    Comprehensive backtesting framework for VIX-based trading strategies using historical market data. 
+                    Test and validate your trading algorithms with professional-grade analytics and risk management tools.
+                </p>
+                <div class="alert alert-info mb-3" style="background-color: rgba(13, 202, 240, 0.1); border-color: #0dcaf0;">
+                    <i class="fas fa-database me-2"></i>
+                    <strong>Important:</strong> You must first load data using the "Get Data" button in the section above before running any backtest. 
+                    Data is stored in SQLite database files (e.g., QQQ_VIX_VVIX_Daily.db) ensuring persistence and consistency across all strategies.
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6 class="text-primary mb-2">Strategy Testing</h6>
+                        <ul class="feature-list">
+                            <li>VIX threshold-based strategies</li>
+                            <li>Volatility mean reversion</li>
+                            <li>Multi-asset portfolio testing</li>
+                            <li>Custom entry/exit conditions</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="text-success mb-2">Risk Management</h6>
+                        <ul class="feature-list">
+                            <li>Stop-loss and take-profit levels</li>
+                            <li>Position sizing algorithms</li>
+                            <li>Drawdown analysis</li>
+                            <li>Risk-adjusted returns</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="text-info mb-2">Performance Analytics</h6>
+                        <ul class="feature-list">
+                            <li>Sharpe ratio calculations</li>
+                            <li>Maximum drawdown metrics</li>
+                            <li>Win/loss ratio analysis</li>
+                            <li>Portfolio evolution charts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Strategy Selection & Parameters Section -->
+<div class="row mb-4">
+    <!-- Strategy Selection -->
+    <div class="col-md-4">
+        <div class="card strategy-selection-card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Select Strategy</h5>
+            </div>
+            <div class="card-body">
+                <div class="strategy-list">
+                    <div class="strategy-option">
+                        <input type="radio" id="strategy-1" name="strategy" value="1" class="strategy-radio">
+                        <label for="strategy-1" class="strategy-label">
+                            <span class="strategy-name">Strategy 1: VIX Threshold</span>
+                            <span class="strategy-desc">Simple VIX-based entry/exit strategy</span>
+                        </label>
+                    </div>
+                    
+                    <div class="strategy-option">
+                        <input type="radio" id="strategy-2" name="strategy" value="2" class="strategy-radio">
+                        <label for="strategy-2" class="strategy-label">
+                            <span class="strategy-name">Strategy 2: VIX + TSL</span>
+                            <span class="strategy-desc">VIX threshold with Trailing Stop Loss</span>
+                        </label>
+                    </div>
+                    
+                    <div class="strategy-option">
+                        <input type="radio" id="strategy-3" name="strategy" value="3" class="strategy-radio">
+                        <label for="strategy-3" class="strategy-label">
+                            <span class="strategy-name">Strategy 3: VIX/VVIX Spread</span>
+                            <span class="strategy-desc">Strategy 3 coming soon</span>
+                        </label>
+                    </div>
+                    
+                    <div class="strategy-option">
+                        <input type="radio" id="strategy-4" name="strategy" value="4" class="strategy-radio">
+                        <label for="strategy-4" class="strategy-label">
+                            <span class="strategy-name">Strategy 4: Bollinger VIX</span>
+                            <span class="strategy-desc">Strategy 4 coming soon</span>
+                        </label>
+                    </div>
+                    
+                    <div class="strategy-option">
+                        <input type="radio" id="strategy-5" name="strategy" value="5" class="strategy-radio">
+                        <label for="strategy-5" class="strategy-label">
+                            <span class="strategy-name">Strategy 5: Multi-Asset VIX</span>
+                            <span class="strategy-desc">Strategy 5 coming soon</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Strategy Parameters -->
+    <div class="col-md-8">
+        <div class="card strategy-parameters-card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Strategy Parameters</h5>
+            </div>
+            <div class="card-body">
+                <div id="no-strategy-selected" class="no-selection-message">
+                    <p class="text-muted text-center">Please select a strategy to configure parameters</p>
+                </div>
+                
+                <!-- Strategy 1 Parameters -->
+                <div id="strategy-1-params" class="strategy-params" style="display: none;">
+                    <h6 class="mb-3">Strategy 1: VIX Threshold Parameters</h6>
+                    
+                    <!-- Position Direction -->
+                    <div class="mb-4">
+                        <label class="form-label">Position Direction</label>
+                        <div class="position-direction-container">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="s1-direction" id="s1-long" value="long" checked>
+                                <label class="form-check-label position-label long-label" for="s1-long">
+                                    Go Long
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="s1-direction" id="s1-short" value="short">
+                                <label class="form-check-label position-label short-label" for="s1-short">
+                                    Go Short<br>
+                                    <small style="font-size: 0.7em;">(coming soon)</small>
+                                </label>
+                            </div>
+                        </div>
+                        <small class="form-text text-muted">Choose whether to go long or short when signals are triggered</small>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">VIX Upper Bound</label>
+                                <input type="number" class="form-control" id="s1-vix-upper" value="20" min="0" max="50" step="0.5">
+                                <small class="form-text text-muted">Enter position when VIX exceeds this level</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">VIX Lower Bound</label>
+                                <input type="number" class="form-control" id="s1-vix-lower" value="0" min="0" max="30" step="0.5">
+                                <small class="form-text text-muted">Exit position when VIX falls below this level</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">VVIX Upper Bound</label>
+                                <input type="number" class="form-control" id="s1-vvix-upper" value="100" min="0" max="200" step="5">
+                                <small class="form-text text-muted">Additional VVIX filter for entries</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">VVIX Lower Bound</label>
+                                <input type="number" class="form-control" id="s1-vvix-lower" value="0" min="0" max="120" step="5">
+                                <small class="form-text text-muted">Additional VVIX filter for exits</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Strategy 2 Parameters -->
+                <div id="strategy-2-params" class="strategy-params" style="display: none;">
+                    <h6 class="mb-3">Strategy 2: VIX Threshold with Trailing Stop Loss</h6>
+                    
+                    <!-- Position Direction -->
+                    <div class="mb-4">
+                        <label class="form-label">Position Direction</label>
+                        <div class="position-direction-container">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="s2-direction" id="s2-long" value="long" checked>
+                                <label class="form-check-label position-label long-label" for="s2-long">
+                                    Go Long
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="s2-direction" id="s2-short" value="short" disabled>
+                                <label class="form-check-label position-label short-label" for="s2-short">
+                                    Go Short<br>
+                                    <small style="font-size: 0.7em;">(coming soon)</small>
+                                </label>
+                            </div>
+                        </div>
+                        <small class="form-text text-muted">Choose whether to go long or short when signals are triggered</small>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">VIX Upper Bound</label>
+                                <input type="number" class="form-control" id="s2-vix-upper" value="20" min="0" max="50" step="0.5">
+                                <small class="form-text text-muted">Enter position when VIX is below this level</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">VIX Lower Bound</label>
+                                <input type="number" class="form-control" id="s2-vix-lower" value="0" min="0" max="30" step="0.5">
+                                <small class="form-text text-muted">Exit position when VIX is outside this level</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">TSL Percentage (%)</label>
+                                <input type="number" class="form-control" id="s2-tsl-percentage" value="2" min="0.1" max="10" step="0.1">
+                                <small class="form-text text-muted">Trailing stop loss percentage (e.g., 2 for 2%)</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">VVIX Upper Bound</label>
+                                <input type="number" class="form-control" id="s2-vvix-upper" value="100" min="0" max="200" step="5">
+                                <small class="form-text text-muted">Additional VVIX filter for entries</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">VVIX Lower Bound</label>
+                                <input type="number" class="form-control" id="s2-vvix-lower" value="0" min="0" max="120" step="5">
+                                <small class="form-text text-muted">Additional VVIX filter for exits</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Wait Period (days)</label>
+                                <input type="number" class="form-control" id="s2-wait-period" value="2" min="0" max="10" step="1">
+                                <small class="form-text text-muted">Days to wait after TSL hit before re-entering</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="s2-ignore-low">
+                                    <label class="form-check-label" for="s2-ignore-low">
+                                        Ignore Low Price for TSL
+                                    </label>
+                                    <small class="form-text text-muted d-block">If checked, only closing price will be used to check TSL breach</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Strategy 3 Parameters -->
+                <div id="strategy-3-params" class="strategy-params" style="display: none;">
+                    <h6 class="mb-3">Strategy 3: VIX/VVIX Spread Parameters</h6>
+                    
+                    <!-- Position Direction -->
+                    <div class="mb-4">
+                        <label class="form-label">Position Direction</label>
+                        <div class="position-direction-container">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="s3-direction" id="s3-long" value="long" checked>
+                                <label class="form-check-label position-label long-label" for="s3-long">
+                                    Go Long
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="s3-direction" id="s3-short" value="short">
+                                <label class="form-check-label position-label short-label" for="s3-short">
+                                    Go Short
+                                </label>
+                            </div>
+                        </div>
+                        <small class="form-text text-muted">Choose whether to go long or short when signals are triggered</small>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">VIX Upper Bound</label>
+                                <input type="number" class="form-control" id="s3-vix-upper" value="28" min="18" max="45" step="0.5">
+                                <small class="form-text text-muted">VIX threshold for spread analysis</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">VIX Lower Bound</label>
+                                <input type="number" class="form-control" id="s3-vix-lower" value="14" min="10" max="25" step="0.5">
+                                <small class="form-text text-muted">VIX exit threshold for spread strategy</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">VVIX Upper Bound</label>
+                                <input type="number" class="form-control" id="s3-vvix-upper" value="140" min="100" max="220" step="5">
+                                <small class="form-text text-muted">VVIX threshold for spread signals</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">VVIX Lower Bound</label>
+                                <input type="number" class="form-control" id="s3-vvix-lower" value="85" min="60" max="130" step="5">
+                                <small class="form-text text-muted">VVIX exit for spread analysis</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Strategy 4 Parameters -->
+                <div id="strategy-4-params" class="strategy-params" style="display: none;">
+                    <h6 class="mb-3">Strategy 4: Bollinger VIX Parameters</h6>
+                    
+                    <!-- Position Direction -->
+                    <div class="mb-4">
+                        <label class="form-label">Position Direction</label>
+                        <div class="position-direction-container">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="s4-direction" id="s4-long" value="long" checked>
+                                <label class="form-check-label position-label long-label" for="s4-long">
+                                    Go Long
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="s4-direction" id="s4-short" value="short">
+                                <label class="form-check-label position-label short-label" for="s4-short">
+                                    Go Short
+                                </label>
+                            </div>
+                        </div>
+                        <small class="form-text text-muted">Choose whether to go long or short when signals are triggered</small>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">VIX Upper Bound</label>
+                                <input type="number" class="form-control" id="s4-vix-upper" value="32" min="22" max="50" step="0.5">
+                                <small class="form-text text-muted">VIX upper Bollinger Band level</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">VIX Lower Bound</label>
+                                <input type="number" class="form-control" id="s4-vix-lower" value="16" min="12" max="28" step="0.5">
+                                <small class="form-text text-muted">VIX lower Bollinger Band level</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">VVIX Upper Bound</label>
+                                <input type="number" class="form-control" id="s4-vvix-upper" value="125" min="95" max="180" step="5">
+                                <small class="form-text text-muted">VVIX Bollinger confirmation</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">VVIX Lower Bound</label>
+                                <input type="number" class="form-control" id="s4-vvix-lower" value="90" min="70" max="130" step="5">
+                                <small class="form-text text-muted">VVIX Bollinger exit level</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Strategy 5 Parameters -->
+                <div id="strategy-5-params" class="strategy-params" style="display: none;">
+                    <h6 class="mb-3">Strategy 5: Multi-Asset VIX Parameters</h6>
+                    
+                    <!-- Position Direction -->
+                    <div class="mb-4">
+                        <label class="form-label">Position Direction</label>
+                        <div class="position-direction-container">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="s5-direction" id="s5-long" value="long" checked>
+                                <label class="form-check-label position-label long-label" for="s5-long">
+                                    Go Long
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="s5-direction" id="s5-short" value="short">
+                                <label class="form-check-label position-label short-label" for="s5-short">
+                                    Go Short
+                                </label>
+                            </div>
+                        </div>
+                        <small class="form-text text-muted">Choose whether to go long or short when signals are triggered</small>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">VIX Upper Bound</label>
+                                <input type="number" class="form-control" id="s5-vix-upper" value="26" min="20" max="40" step="0.5">
+                                <small class="form-text text-muted">VIX regime classification threshold</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">VIX Lower Bound</label>
+                                <input type="number" class="form-control" id="s5-vix-lower" value="18" min="12" max="30" step="0.5">
+                                <small class="form-text text-muted">VIX regime exit threshold</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">VVIX Upper Bound</label>
+                                <input type="number" class="form-control" id="s5-vvix-upper" value="115" min="85" max="170" step="5">
+                                <small class="form-text text-muted">VVIX portfolio allocation trigger</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">VVIX Lower Bound</label>
+                                <input type="number" class="form-control" id="s5-vvix-lower" value="95" min="75" max="125" step="5">
+                                <small class="form-text text-muted">VVIX rebalancing threshold</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Investment Amount (Common for all strategies) -->
+                <div class="mt-4">
+                    <h6 class="mb-3">Investment Parameters</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Initial Investment Amount ($)</label>
+                                <input type="number" class="form-control" id="investment-amount" value="10000" min="1000" step="1000">
+                                <small class="form-text text-muted">Starting capital for backtesting</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Run Backtest Button -->
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-primary btn-lg" id="run-backtest-btn" disabled>
+                            <i class="fas fa-chart-line me-2"></i>Run Backtest
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Backtest Results Section -->
+<div class="row mb-4" id="backtest-results-section" style="display: none;">
+    <div class="col-12">
+        <div class="card results-card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">
+                    <span class="results-title-gradient">Backtest Results</span>
+                </h5>
+                <div class="chart-toggle-buttons">
+                    <button class="chart-btn active" data-chart="portfolio">Portfolio Value</button>
+                    <button class="chart-btn" data-chart="portfolio-dividends">Portfolio with Dividends</button>
+                    <button class="chart-btn" data-chart="dividends-bar">Dividends Paid</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Loading progress bar -->
+                <div id="backtest-loading" style="display: none;">
+                    <div class="text-center py-5">
+                        <div class="progress-container" style="max-width: 600px; margin: 0 auto;">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="mb-0">Running backtest...</h6>
+                                <span class="progress-percentage text-primary fw-bold">0%</span>
+                            </div>
+                            <div class="progress" style="height: 25px; background-color: #1a1a1a; border: 1px solid #2a2a2a;">
+                                <div id="backtest-progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                                     role="progressbar" 
+                                     style="width: 0%; background-color: #00ff88;"
+                                     aria-valuenow="0" 
+                                     aria-valuemin="0" 
+                                     aria-valuemax="100">
+                                </div>
+                            </div>
+                            <p class="mt-3 text-muted mb-0">
+                                <small id="progress-status">Initializing backtest...</small>
+                            </p>
+                            <p class="text-muted mb-0">
+                                <small id="progress-details" style="color: #666;">Processing row 0 of 0</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Results content -->
+                <div id="backtest-results-content">
+                    <!-- Portfolio value chart will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Backtesting -->
+<script>
+// Ensure the script runs after all resources are loaded
+// Global variables to store backtest session
+let backtestSessionKey = null;
+let chartParameterDates = {
+    start: null,
+    end: null
+};
+
+window.addEventListener('load', function() {
+    // Small delay to ensure jQuery is fully initialized
+    setTimeout(function() {
+        // Check if jQuery is loaded
+        if (typeof jQuery === 'undefined' || typeof $ === 'undefined') {
+            console.error('jQuery is not loaded. Backtesting functionality will not work.');
+            alert('Error: jQuery is not loaded. Please refresh the page.');
+            return;
+        }
+        
+        console.log('jQuery version:', $.fn.jquery);
+        
+        // Use jQuery
+        $(function() {
+        console.log('Backtesting script loaded successfully');
+        
+        // Check if button exists
+        if ($('#run-backtest-btn').length > 0) {
+            console.log('Run Backtest button found');
+        } else {
+            console.error('Run Backtest button not found!');
+        }
+        
+        // Strategy selection handler
+        $('input[name="strategy"]').on('change', function() {
+            const selectedStrategy = $(this).val();
+            console.log('Strategy selected:', selectedStrategy);
+            
+            // Hide all parameter sections
+            $('.strategy-params').hide();
+            $('#no-strategy-selected').hide();
+            
+            // Show selected strategy parameters
+            if (selectedStrategy) {
+                $(`#strategy-${selectedStrategy}-params`).show();
+                
+                // Enable backtest button for both strategies
+                if (selectedStrategy === '1' || selectedStrategy === '2') {
+                    $('#run-backtest-btn').prop('disabled', false);
+                    console.log('Backtest button enabled');
+                } else {
+                    $('#run-backtest-btn').prop('disabled', true);
+                    console.log('Backtest button disabled');
+                }
+            }
+        });
+        
+        // Run backtest button handler
+        $('#run-backtest-btn').on('click', function(e) {
+            e.preventDefault();
+            console.log('Backtest button clicked');
+            const selectedStrategy = $('input[name="strategy"]:checked').val();
+            console.log('Selected strategy for backtest:', selectedStrategy);
+            
+            if (selectedStrategy === '1') {
+                runStrategy1Backtest();
+            } else if (selectedStrategy === '2') {
+                runStrategy2Backtest();
+            }
+        });
+        
+        // Function to download backtest results as Excel
+        function downloadBacktestExcel() {
+            if (!backtestSessionKey) {
+                alert('No backtest results available to download');
+                return;
+            }
+            
+            // Create a form element to submit the download request
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/backtesting/download-excel/';
+            form.style.display = 'none';
+            
+            // Add CSRF token
+            const csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = 'csrfmiddlewaretoken';
+            csrfInput.value = getCookie('csrftoken');
+            form.appendChild(csrfInput);
+            
+            // Add session key
+            const sessionKeyInput = document.createElement('input');
+            sessionKeyInput.type = 'hidden';
+            sessionKeyInput.name = 'session_key';
+            sessionKeyInput.value = backtestSessionKey;
+            form.appendChild(sessionKeyInput);
+            
+            // Append form to body and submit
+            document.body.appendChild(form);
+            form.submit();
+            
+            // Remove form after submission
+            setTimeout(() => {
+                form.remove();
+            }, 100);
+        }
+        
+        // Make downloadBacktestExcel globally accessible
+        window.downloadBacktestExcel = downloadBacktestExcel;
+        
+        // Define runStrategy1Backtest inside jQuery scope
+        function runStrategy1Backtest() {
+            console.log('runStrategy1Backtest called');
+            
+            // Get parameters
+            const vixUpper = parseFloat($('#s1-vix-upper').val());
+            const vixLower = parseFloat($('#s1-vix-lower').val());
+            const vvixUpper = parseFloat($('#s1-vvix-upper').val());
+            const vvixLower = parseFloat($('#s1-vvix-lower').val());
+            const investmentAmount = parseFloat($('#investment-amount').val());
+            
+            console.log('Parameters:', { vixUpper, vixLower, vvixUpper, vvixLower, investmentAmount });
+            
+            // Show results section and loading spinner
+            $('#backtest-results-section').show();
+            $('#backtest-loading').show();
+            $('#backtest-results-content').hide();
+            
+            // Reset progress bar
+            $('#backtest-progress-bar').css('width', '0%').attr('aria-valuenow', 0);
+            $('.progress-percentage').text('0%');
+            $('#progress-status').text('Initializing backtest...');
+            $('#progress-details').text('Processing row 0 of 0');
+            
+            // Variable to store progress polling interval
+            let progressInterval = null;
+            
+            // Function to update progress bar
+            function updateProgress(progressData) {
+                const percentage = progressData.percentage || 0;
+                const current = progressData.current || 0;
+                const total = progressData.total || 0;
+                const status = progressData.status || 'Processing...';
+                
+                $('#backtest-progress-bar').css('width', percentage + '%').attr('aria-valuenow', percentage);
+                $('.progress-percentage').text(percentage + '%');
+                $('#progress-status').text(status);
+                $('#progress-details').text(`Processing row ${current} of ${total}`);
+                
+                // If complete, stop polling
+                if (percentage >= 100 && progressInterval) {
+                    clearInterval(progressInterval);
+                    progressInterval = null;
+                }
+            }
+        
+            // Make AJAX call to run backtest
+            console.log('Making AJAX call to /backtesting/run-strategy1/');
+            
+            // Make the backtest request
+            $.ajax({
+            url: '/backtesting/run-strategy1/',
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            data: JSON.stringify({
+                vix_upper: vixUpper,
+                vix_lower: vixLower,
+                vvix_upper: vvixUpper,
+                vvix_lower: vvixLower,
+                investment_amount: investmentAmount
+            }),
+            contentType: 'application/json',
+            success: function(response) {
+                console.log('Backtest response received:', response);
+                
+                // Check if we have a progress key to start polling
+                if (response.progress_key) {
+                    console.log('Starting progress polling for key:', response.progress_key);
+                    
+                    let resultCheckInterval = null;
+                    
+                    // Start progress polling
+                    progressInterval = setInterval(function() {
+                        $.ajax({
+                            url: `/backtesting/progress/${response.progress_key}/`,
+                            method: 'GET',
+                            success: function(progressResponse) {
+                                if (progressResponse.success && progressResponse.progress) {
+                                    updateProgress(progressResponse.progress);
+                                    
+                                    // Check if backtest is complete
+                                    if (progressResponse.progress.percentage >= 100) {
+                                        // Stop progress polling
+                                        if (progressInterval) {
+                                            clearInterval(progressInterval);
+                                            progressInterval = null;
+                                        }
+                                        
+                                        // Get the results after a longer delay to ensure they're saved
+                                        setTimeout(function() {
+                                            getBacktestResults(response.progress_key);
+                                        }, 1500); // Increased from 500ms to 1.5s
+                                    }
+                                    
+                                    // Check for errors
+                                    if (progressResponse.progress.error) {
+                                        // Stop polling on error
+                                        if (progressInterval) {
+                                            clearInterval(progressInterval);
+                                            progressInterval = null;
+                                        }
+                                        
+                                        $('#backtest-loading').hide();
+                                        $('#backtest-results-content').show();
+                                        $('#backtest-results-content').html(
+                                            '<div class="alert alert-danger">' + 
+                                            '<i class="fas fa-exclamation-triangle me-2"></i>' +
+                                            'Error: ' + progressResponse.progress.status + 
+                                            '</div>'
+                                        );
+                                    }
+                                }
+                            },
+                            error: function(xhr) {
+                                // Only log error if it's not a 404 (progress data expired)
+                                if (xhr.status !== 404) {
+                                    console.error('Error polling progress:', xhr.status);
+                                }
+                            }
+                        });
+                    }, 500); // Poll every 500ms for smooth updates without overwhelming the server
+                    
+                    return; // Exit early since we're waiting for async results
+                }
+                
+                // If backtest is complete (has results) - this shouldn't happen with async
+                if (response.chart_html) {
+                    // Stop progress polling if still running
+                    if (progressInterval) {
+                        clearInterval(progressInterval);
+                        progressInterval = null;
+                    }
+                    
+                    // Ensure progress shows 100%
+                    updateProgress({percentage: 100, status: 'Backtest complete!', current: response.summary?.total_rows || 0, total: response.summary?.total_rows || 0});
+                    
+                    // Hide loading first, then show results to ensure proper sizing
+                    $('#backtest-loading').fadeOut(300, function() {
+                        // After loading is completely hidden, show results
+                        $('#backtest-results-content').fadeIn(200, function() {
+                            // After results are fully visible, resize all Plotly charts
+                            $('#backtest-results-content .js-plotly-plot').each(function() {
+                                if (window.Plotly) {
+                                    window.Plotly.Plots.resize(this);
+                                }
+                            });
+                        });
+                    });
+                    
+                    // Store the session key
+                    backtestSessionKey = response.session_key;
+                    
+                    // Store chart parameter dates from backend response
+                    if (response.chart_dates) {
+                        chartParameterDates.start = response.chart_dates.start;
+                        chartParameterDates.end = response.chart_dates.end;
+                        console.log('Chart dates from backend:', chartParameterDates);
+                    } else {
+                        console.warn('No chart_dates in response, will try to get from form');
+                        // Fallback: try to get from form inputs if backend didn't send dates
+                        const formStartDate = $('#id_start_date').val() || $('input[name="start_date"]').val();
+                        const formEndDate = $('#id_end_date').val() || $('input[name="end_date"]').val();
+                        if (formStartDate && formEndDate) {
+                            chartParameterDates.start = formStartDate;
+                            chartParameterDates.end = formEndDate;
+                            console.log('Got dates from form:', chartParameterDates);
+                        }
+                    }
+                    
+                    // Create structured layout for results
+                    let resultsHtml = `
+                        <div class="backtest-results-container">
+                            <!-- Portfolio Value Charts Container -->
+                            <div class="portfolio-charts-wrapper">
+                                <!-- Original Portfolio Value Chart -->
+                                <div id="portfolio-chart-container" class="chart-container portfolio-chart-section mb-4 active">
+                                    ${response.chart_html}
+                                </div>
+                                
+                                <!-- Portfolio Value with Dividends Chart -->
+                                <div id="portfolio-dividends-chart-container" class="chart-container portfolio-chart-section mb-4" style="display: none;">
+                                    ${response.chart_dividends_html || ''}
+                                </div>
+                                
+                                <!-- Dividends Bar Chart -->
+                                <div id="dividends-bar-chart-container" class="chart-container portfolio-chart-section mb-4" style="display: none;">
+                                    ${response.dividends_bar_html || ''}
+                                </div>
+                            </div>
+                            
+                            <!-- Drawdown Charts Row -->
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="card drawdown-card">
+                                        <div class="card-body">
+                                            ${response.dd_overall_html}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card drawdown-card">
+                                        <div class="card-body">
+                                            ${response.dd_trade_html}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Performance Metrics Cards -->
+                            ${response.metrics ? createMetricsCards(response.metrics) : ''}
+                            
+                            <!-- Results Table -->
+                            ${response.table_html || ''}
+                        </div>
+                    `;
+                    
+                    $('#backtest-results-content').html(resultsHtml);
+                    
+                    // Force immediate resize of Plotly charts after inserting HTML
+                    $('#backtest-results-content .js-plotly-plot').each(function() {
+                        if (window.Plotly) {
+                            window.Plotly.Plots.resize(this);
+                        }
+                    });
+                    
+                    // Initialize period selection functionality with a small delay
+                    setTimeout(function() {
+                        initializePeriodSelection();
+                        initializeChartToggle();
+                    }, 100);
+                    
+                    // Log summary stats
+                    if (response.summary) {
+                        console.log('Backtest Summary:', response.summary);
+                    }
+                } else {
+                    // Stop progress polling on error
+                    if (progressInterval) {
+                        clearInterval(progressInterval);
+                        progressInterval = null;
+                    }
+                    
+                    $('#backtest-loading').hide();
+                    $('#backtest-results-content').show();
+                    $('#backtest-results-content').html(
+                        '<div class="alert alert-danger">' + 
+                        '<i class="fas fa-exclamation-triangle me-2"></i>' +
+                        'Error: ' + response.error + 
+                        '</div>'
+                    );
+                }
+            },
+            error: function(xhr, status, error) {
+                // Stop progress polling on error
+                if (progressInterval) {
+                    clearInterval(progressInterval);
+                    progressInterval = null;
+                }
+                
+                $('#backtest-loading').hide();
+                $('#backtest-results-content').show();
+                $('#backtest-results-content').html(
+                    '<div class="alert alert-danger">' + 
+                    '<i class="fas fa-exclamation-triangle me-2"></i>' +
+                    'An error occurred while running the backtest. Please try again.' + 
+                    '</div>'
+                );
+            }
+        });
+        }
+        
+        // Define runStrategy2Backtest for TSL strategy
+        function runStrategy2Backtest() {
+            console.log('runStrategy2Backtest called');
+            
+            // Get parameters
+            const vixUpper = parseFloat($('#s2-vix-upper').val());
+            const vixLower = parseFloat($('#s2-vix-lower').val());
+            const vvixUpper = parseFloat($('#s2-vvix-upper').val());
+            const vvixLower = parseFloat($('#s2-vvix-lower').val());
+            const investmentAmount = parseFloat($('#investment-amount').val());
+            const tslPercentage = parseFloat($('#s2-tsl-percentage').val()) / 100; // Convert to decimal
+            const waitPeriod = parseInt($('#s2-wait-period').val());
+            const ignoreLow = $('#s2-ignore-low').is(':checked');
+            
+            console.log('Parameters:', { vixUpper, vixLower, vvixUpper, vvixLower, investmentAmount, tslPercentage, waitPeriod, ignoreLow });
+            
+            // Show results section and loading spinner
+            $('#backtest-results-section').show();
+            $('#backtest-loading').show();
+            $('#backtest-results-content').hide();
+            
+            // Reset progress bar
+            $('#backtest-progress-bar').css('width', '0%').attr('aria-valuenow', 0);
+            $('.progress-percentage').text('0%');
+            $('#progress-status').text('Initializing backtest...');
+            $('#progress-details').text('Processing row 0 of 0');
+            
+            // Variable to store progress polling interval
+            let progressInterval = null;
+            
+            // Function to update progress bar
+            function updateProgress(progressData) {
+                // Handle both direct data and nested progress object
+                const data = progressData.progress || progressData;
+                const percentage = data.percentage || 0;
+                const current = data.current || 0;
+                const total = data.total || 0;
+                const status = data.status || 'Processing...';
+                
+                console.log('Updating progress:', { percentage, current, total, status });
+                
+                $('#backtest-progress-bar').css('width', percentage + '%').attr('aria-valuenow', percentage);
+                $('.progress-percentage').text(percentage + '%');
+                $('#progress-status').text(status);
+                $('#progress-details').text(`Processing row ${current} of ${total}`);
+                
+                // If complete, stop polling
+                if (percentage >= 100 && progressInterval) {
+                    clearInterval(progressInterval);
+                    progressInterval = null;
+                }
+            }
+        
+            // Make AJAX call to run backtest
+            console.log('Making AJAX call to /backtesting/run-strategy2/');
+            
+            // Make the backtest request
+            $.ajax({
+                url: '/backtesting/run-strategy2/',
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                data: JSON.stringify({
+                    vix_upper: vixUpper,
+                    vix_lower: vixLower,
+                    vvix_upper: vvixUpper,
+                    vvix_lower: vvixLower,
+                    investment_amount: investmentAmount,
+                    tsl_percentage: tslPercentage,
+                    wait_period: waitPeriod,
+                    ignore_low: ignoreLow
+                }),
+                contentType: 'application/json',
+                success: function(response) {
+                    console.log('Backtest started:', response);
+                    
+                    // Check if we got an error message
+                    if (!response.success && response.error) {
+                        // Stop progress tracking
+                        if (progressInterval) {
+                            clearInterval(progressInterval);
+                            progressInterval = null;
+                        }
+                        
+                        // Show error message
+                        $('#backtest-loading').hide();
+                        $('#backtest-results-content').show();
+                        $('#backtest-results-content').html(
+                            '<div class="alert alert-danger">' + 
+                            '<i class="fas fa-exclamation-triangle me-2"></i>' +
+                            response.error + 
+                            '</div>'
+                        );
+                        return;
+                    }
+                    
+                    if (response.success && response.progress_key) {
+                        // Start polling for progress
+                        progressInterval = setInterval(function() {
+                            $.ajax({
+                                url: `/backtesting/progress/${response.progress_key}/`,
+                                method: 'GET',
+                                success: function(progressData) {
+                                    console.log('Progress update:', progressData);
+                                    
+                                    // Ensure we have progress data
+                                    if (!progressData) {
+                                        console.error('No progress data received');
+                                        return;
+                                    }
+                                    
+                                    updateProgress(progressData);
+                                    
+                                    // Check if completed - check both direct and nested progress
+                                    var percentage = progressData.percentage || (progressData.progress && progressData.progress.percentage) || 0;
+                                    var status = progressData.status || (progressData.progress && progressData.progress.status) || '';
+                                    
+                                    console.log('Progress check - percentage:', percentage, 'status:', status);
+                                    
+                                    if (percentage >= 100 || status === 'Backtest complete!') {
+                                        console.log('Backtest complete! Fetching results...');
+                                        // Stop polling
+                                        clearInterval(progressInterval);
+                                        progressInterval = null;
+                                        
+                                        // Wait a bit longer to ensure results are fully saved
+                                        setTimeout(function() {
+                                            getBacktestResults(response.progress_key);
+                                        }, 1500); // Increased from 500ms to 1.5s
+                                    } else if (progressData.error) {
+                                        // Stop polling on error
+                                        clearInterval(progressInterval);
+                                        progressInterval = null;
+                                        
+                                        $('#backtest-loading').hide();
+                                        $('#backtest-results-content').show();
+                                        $('#backtest-results-content').html(
+                                            '<div class="alert alert-danger">' + 
+                                            '<i class="fas fa-exclamation-triangle me-2"></i>' +
+                                            'Error: ' + (progressData.status || 'Unknown error occurred') + 
+                                            '</div>'
+                                        );
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error getting progress:', error);
+                                }
+                            });
+                        }, 1000); // Poll every second
+                    } else {
+                        // Handle immediate error
+                        $('#backtest-loading').hide();
+                        $('#backtest-results-content').show();
+                        $('#backtest-results-content').html(
+                            '<div class="alert alert-danger">' + 
+                            '<i class="fas fa-exclamation-triangle me-2"></i>' +
+                            'Error: ' + (response.error || 'Failed to start backtest') + 
+                            '</div>'
+                        );
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Backtest error:', error);
+                    $('#backtest-loading').hide();
+                    $('#backtest-results-content').show();
+                    $('#backtest-results-content').html(
+                        '<div class="alert alert-danger">' + 
+                        '<i class="fas fa-exclamation-triangle me-2"></i>' +
+                        'An error occurred while running the backtest. Please try again.' + 
+                        '</div>'
+                    );
+                }
+            });
+        }
+        
+        // Function to get backtest results after completion
+        function getBacktestResults(progressKey) {
+            console.log('Getting backtest results for key:', progressKey);
+            
+            $.ajax({
+                url: '/backtesting/get-result/',
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                data: JSON.stringify({
+                    progress_key: progressKey
+                }),
+                contentType: 'application/json',
+                success: function(response) {
+                    console.log('Got backtest results:', response);
+                    
+                    if (response.success) {
+                        // Hide loading and show results
+                        $('#backtest-loading').fadeOut(300, function() {
+                            $('#backtest-results-content').fadeIn(200, function() {
+                                // Store the session key
+                                backtestSessionKey = response.session_key;
+                                
+                                // Store chart parameter dates from backend response
+                                if (response.chart_dates) {
+                                    chartParameterDates.start = response.chart_dates.start;
+                                    chartParameterDates.end = response.chart_dates.end;
+                                    console.log('Chart dates from backend:', chartParameterDates);
+                                }
+                                
+                                // Create structured layout for results
+                                let resultsHtml = `
+                                    <div class="backtest-results-container">
+                                        <!-- Portfolio Value Charts Container -->
+                                        <div class="portfolio-charts-wrapper">
+                                            <!-- Original Portfolio Value Chart -->
+                                            <div id="portfolio-chart-container" class="chart-container portfolio-chart-section mb-4 active">
+                                                ${response.chart_html}
+                                            </div>
+                                            
+                                            <!-- Portfolio Value with Dividends Chart -->
+                                            <div id="portfolio-dividends-chart-container" class="chart-container portfolio-chart-section mb-4" style="display: none;">
+                                                ${response.chart_dividends_html || ''}
+                                            </div>
+                                            
+                                            <!-- Dividends Bar Chart -->
+                                            <div id="dividends-bar-chart-container" class="chart-container portfolio-chart-section mb-4" style="display: none;">
+                                                ${response.dividends_bar_html || ''}
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Drawdown Charts Row -->
+                                        <div class="row mb-4">
+                                            <div class="col-md-6">
+                                                <div class="card drawdown-card">
+                                                    <div class="card-body">
+                                                        ${response.dd_overall_html}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card drawdown-card">
+                                                    <div class="card-body">
+                                                        ${response.dd_trade_html}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Performance Metrics Cards -->
+                                        ${response.metrics ? createMetricsCards(response.metrics) : ''}
+                                        
+                                        <!-- Results Table -->
+                                        ${response.table_html || ''}
+                                    </div>
+                                `;
+                                
+                                $('#backtest-results-content').html(resultsHtml);
+                                
+                                // Force resize of Plotly charts after content is visible
+                                $('#backtest-results-content .js-plotly-plot').each(function() {
+                                    if (window.Plotly) {
+                                        window.Plotly.Plots.resize(this);
+                                    }
+                                });
+                                
+                                // Initialize period selection functionality with a small delay
+                                setTimeout(function() {
+                                    initializePeriodSelection();
+                                    initializeChartToggle();
+                                }, 100);
+                                
+                                // Log summary stats
+                                if (response.summary) {
+                                    console.log('Backtest Summary:', response.summary);
+                                }
+                            });
+                        });
+                    } else {
+                        // Handle incomplete or error state
+                        if (response.status === 'incomplete') {
+                            // Still processing, retry after a delay
+                            console.log('Backtest still processing, retrying in 2 seconds...');
+                            setTimeout(function() {
+                                getBacktestResults(progressKey);
+                            }, 2000);
+                        } else {
+                            // Error occurred
+                            $('#backtest-loading').hide();
+                            $('#backtest-results-content').show();
+                            $('#backtest-results-content').html(
+                                '<div class="alert alert-danger">' + 
+                                '<i class="fas fa-exclamation-triangle me-2"></i>' +
+                                'Error: ' + (response.error || 'Unknown error occurred') + 
+                                '</div>'
+                            );
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX error getting results:', xhr.status, error);
+                    
+                    // Parse response if available
+                    let errorMsg = 'An error occurred while getting the backtest results.';
+                    try {
+                        if (xhr.responseJSON && xhr.responseJSON.error) {
+                            errorMsg = xhr.responseJSON.error;
+                        } else if (xhr.responseText) {
+                            let response = JSON.parse(xhr.responseText);
+                            if (response.error) {
+                                errorMsg = response.error;
+                            }
+                        }
+                    } catch (e) {
+                        console.error('Error parsing error response:', e);
+                    }
+                    
+                    $('#backtest-loading').hide();
+                    $('#backtest-results-content').show();
+                    $('#backtest-results-content').html(
+                        '<div class="alert alert-danger">' + 
+                        '<i class="fas fa-exclamation-triangle me-2"></i>' +
+                        errorMsg + 
+                        '<div class="mt-2"><small class="text-muted">If this error persists, please check the console for more details.</small></div>' +
+                        '</div>'
+                    );
+                }
+            });
+        }
+        
+        // Function to create metrics cards
+        function createMetricsCards(metrics) {
+            return `
+                <div class="metrics-section mb-4">
+                    <h5 class="mb-3">Performance Metrics</h5>
+                    
+                    <!-- Period Selection Controls -->
+                    <div class="period-selection-container mb-3">
+                        <div class="btn-group" role="group">
+                            <input type="radio" class="btn-check" name="period-type" id="period-overall" value="overall" checked>
+                            <label class="btn btn-outline-secondary btn-sm" for="period-overall">Overall</label>
+                            
+                            <input type="radio" class="btn-check" name="period-type" id="period-custom" value="custom">
+                            <label class="btn btn-outline-secondary btn-sm" for="period-custom">Specify Period</label>
+                        </div>
+                        
+                        <div class="custom-period-inputs ms-3" style="display: none;">
+                            <div class="d-inline-flex align-items-center">
+                                <label class="me-2 small">Start:</label>
+                                <input type="date" 
+                                       class="form-control form-control-sm me-3" 
+                                       id="custom-start-date" 
+                                       style="width: 150px;"
+                                       placeholder="YYYY-MM-DD"
+                                       pattern="\d{4}-\d{2}-\d{2}">
+                                <label class="me-2 small">End:</label>
+                                <input type="date" 
+                                       class="form-control form-control-sm" 
+                                       id="custom-end-date" 
+                                       style="width: 150px;"
+                                       placeholder="YYYY-MM-DD"
+                                       pattern="\d{4}-\d{2}-\d{2}">
+                                <small class="text-muted ms-2" style="font-size: 0.75rem;">Format: YYYY-MM-DD</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 1: Market & Trade Overview -->
+                    <div class="row mb-3">
+                        <div class="col-md-2">
+                            <div class="metric-card">
+                                <div class="metric-value">${metrics.total_market_days}</div>
+                                <div class="metric-label">Total Market Days</div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="metric-card">
+                                <div class="metric-value">${metrics.days_in_market}</div>
+                                <div class="metric-label">Days in Market</div>
+                                <div class="metric-sublabel">(${metrics.days_in_market_pct.toFixed(1)}%)</div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="metric-card">
+                                <div class="metric-value">${metrics.num_trades}</div>
+                                <div class="metric-label">Number of Trades</div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="metric-card">
+                                <div class="metric-value">${metrics.profitable_trades}</div>
+                                <div class="metric-label">Profitable Trades</div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="metric-card">
+                                <div class="metric-value">${metrics.loss_trades}</div>
+                                <div class="metric-label">Loss Trades</div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="metric-card ${metrics.win_rate >= 50 ? 'positive' : 'negative'}">
+                                <div class="metric-value">${metrics.win_rate.toFixed(1)}%</div>
+                                <div class="metric-label">Win Rate</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 2: P&L Metrics -->
+                    <div class="row mb-3">
+                        <div class="col-md-2">
+                            <div class="metric-card positive">
+                                <div class="metric-value">$${metrics.max_profit.toFixed(2)}</div>
+                                <div class="metric-label">Max Profit</div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="metric-card negative">
+                                <div class="metric-value">$${metrics.max_loss.toFixed(2)}</div>
+                                <div class="metric-label">Max Loss</div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="metric-card">
+                                <div class="metric-value">$${metrics.avg_profit.toFixed(2)}</div>
+                                <div class="metric-label">Avg Profit</div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="metric-card">
+                                <div class="metric-value">$${metrics.avg_loss.toFixed(2)}</div>
+                                <div class="metric-label">Avg Loss</div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="metric-card ${metrics.expectancy >= 0 ? 'positive' : 'negative'}">
+                                <div class="metric-value">$${metrics.expectancy.toFixed(2)}</div>
+                                <div class="metric-label">Expectancy</div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="metric-card ${metrics.profit_factor >= 1 ? 'positive' : 'negative'}">
+                                <div class="metric-value">${metrics.profit_factor === Infinity ? '∞' : metrics.profit_factor.toFixed(2)}</div>
+                                <div class="metric-label">Profit Factor</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                                       <!-- Row 3: Streaks & Duration -->
+                   <div class="row mb-3">
+                       <div class="col-md-2">
+                           <div class="metric-card">
+                               <div class="metric-value">${metrics.max_profit_streak}</div>
+                               <div class="metric-label">Max Win Streak</div>
+                           </div>
+                       </div>
+                       <div class="col-md-2">
+                           <div class="metric-card">
+                               <div class="metric-value">${metrics.max_loss_streak}</div>
+                               <div class="metric-label">Max Loss Streak</div>
+                           </div>
+                       </div>
+                       <div class="col-md-2">
+                           <div class="metric-card">
+                               <div class="metric-value">${metrics.avg_duration.toFixed(1)}</div>
+                               <div class="metric-label">Avg Duration</div>
+                               <div class="metric-sublabel">(days)</div>
+                           </div>
+                       </div>
+                       <div class="col-md-2">
+                           <div class="metric-card">
+                               <div class="metric-value">${metrics.max_duration}</div>
+                               <div class="metric-label">Max Duration</div>
+                               <div class="metric-sublabel">(days)</div>
+                           </div>
+                       </div>
+                       <div class="col-md-2">
+                           <div class="metric-card">
+                               <div class="metric-value">${metrics.min_duration}</div>
+                               <div class="metric-label">Min Duration</div>
+                               <div class="metric-sublabel">(days)</div>
+                           </div>
+                       </div>
+                       <div class="col-md-2">
+                           <div class="metric-card ${metrics.total_return >= 0 ? 'positive' : 'negative'}">
+                               <div class="metric-value">${metrics.total_return.toFixed(2)}%</div>
+                               <div class="metric-label">Total Return</div>
+                           </div>
+                       </div>
+                   </div>
+                   
+                   <!-- Row 4: Advanced Metrics - All 5 cards in one row -->
+                   <div class="row mb-3">
+                       <div class="col-md-2">
+                           <div class="metric-card ${metrics.final_value >= metrics.initial_value ? 'positive' : 'negative'}">
+                               <div class="metric-value">$${metrics.final_value.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                               <div class="metric-label">Final Portfolio Value</div>
+                           </div>
+                       </div>
+                       <div class="col-md-2">
+                           <div class="metric-card ${metrics.sharpe_ratio >= 1 ? 'positive' : metrics.sharpe_ratio < 0 ? 'negative' : ''}">
+                               <div class="metric-value">${metrics.sharpe_ratio.toFixed(2)}</div>
+                               <div class="metric-label">Sharpe Ratio</div>
+                           </div>
+                       </div>
+                       <div class="col-md-2">
+                           <div class="metric-card ${metrics.cagr >= 0 ? 'positive' : 'negative'}">
+                               <div class="metric-value">${metrics.cagr.toFixed(2)}%</div>
+                               <div class="metric-label">CAGR</div>
+                           </div>
+                       </div>
+                       <div class="col-md-2">
+                           <div class="metric-card ${metrics.calmar_ratio >= 1 ? 'positive' : ''}">
+                               <div class="metric-value">${metrics.calmar_ratio === Infinity ? '∞' : metrics.calmar_ratio.toFixed(2)}</div>
+                               <div class="metric-label">Calmar Ratio</div>
+                           </div>
+                       </div>
+                       <div class="col-md-2">
+                           <div class="metric-card ${metrics.avg_calmar >= 1 ? 'positive' : ''}">
+                               <div class="metric-value">${metrics.avg_calmar.toFixed(2)}</div>
+                               <div class="metric-label">Avg Calmar</div>
+                           </div>
+                       </div>
+                   </div>
+                   
+                   <!-- Performance Metrics with Paid Dividends Included -->
+                   <div class="mt-4">
+                       <h6 class="text-info mb-3" style="border-bottom: 2px solid #dc3545; padding-bottom: 8px;">
+                           Performance Metrics with Paid Dividends Included
+                       </h6>
+                       <div class="row">
+                           <div class="col-md-2">
+                               <div class="metric-card ${metrics.total_return_with_divs > 0 ? 'positive' : ''}">
+                                   <div class="metric-value ${metrics.total_return_with_divs > 0 ? 'text-success' : 'text-danger'}">${metrics.total_return_with_divs ? metrics.total_return_with_divs.toFixed(2) + '%' : '0.00%'}</div>
+                                   <div class="metric-label">Total Return (%)</div>
+                               </div>
+                           </div>
+                           <div class="col-md-2">
+                               <div class="metric-card">
+                                   <div class="metric-value text-success">$${metrics.final_value_with_divs ? metrics.final_value_with_divs.toFixed(2) : '0.00'}</div>
+                                   <div class="metric-label">Final Portfolio Value</div>
+                               </div>
+                           </div>
+                           <div class="col-md-2">
+                               <div class="metric-card ${metrics.sharpe_ratio_with_divs > 1 ? 'positive' : ''}">
+                                   <div class="metric-value">${metrics.sharpe_ratio_with_divs ? metrics.sharpe_ratio_with_divs.toFixed(2) : '0.00'}</div>
+                                   <div class="metric-label">Sharpe Ratio</div>
+                               </div>
+                           </div>
+                           <div class="col-md-2">
+                               <div class="metric-card ${metrics.cagr_with_divs > 0 ? 'positive' : ''}">
+                                   <div class="metric-value ${metrics.cagr_with_divs > 0 ? 'text-success' : 'text-danger'}">${metrics.cagr_with_divs ? metrics.cagr_with_divs.toFixed(2) + '%' : '0.00%'}</div>
+                                   <div class="metric-label">CAGR</div>
+                               </div>
+                           </div>
+                           <div class="col-md-2">
+                               <div class="metric-card ${metrics.calmar_ratio_with_divs > 1 ? 'positive' : ''}">
+                                   <div class="metric-value">${metrics.calmar_ratio_with_divs ? metrics.calmar_ratio_with_divs.toFixed(2) : '0.00'}</div>
+                                   <div class="metric-label">Calmar Ratio</div>
+                               </div>
+                           </div>
+                           <div class="col-md-2">
+                               <div class="metric-card ${metrics.avg_calmar_with_divs >= 1 ? 'positive' : ''}">
+                                   <div class="metric-value">${metrics.avg_calmar_with_divs ? metrics.avg_calmar_with_divs.toFixed(2) : '0.00'}</div>
+                                   <div class="metric-label">Avg Calmar Ratio</div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   
+                   <!-- Dividend Yield Analytics -->
+                   <div class="mt-4">
+                       <h6 class="text-info mb-3" style="border-bottom: 2px solid #ffc107; padding-bottom: 8px;">
+                           Dividend Yield Analytics
+                       </h6>
+                       <div class="row">
+                           <div class="col-md-2">
+                               <div class="metric-card">
+                                   <div class="metric-value text-success">$${metrics.total_dividends_received ? metrics.total_dividends_received.toFixed(2) : '0.00'}</div>
+                                   <div class="metric-label">Total Dividends Received</div>
+                               </div>
+                           </div>
+                           <div class="col-md-2">
+                               <div class="metric-card ${metrics.dividend_yield_on_investment > 0 ? 'positive' : ''}">
+                                   <div class="metric-value ${metrics.dividend_yield_on_investment > 0 ? 'text-success' : ''}">${metrics.dividend_yield_on_investment ? metrics.dividend_yield_on_investment.toFixed(2) + '%' : '0.00%'}</div>
+                                   <div class="metric-label">Dividend Yield on Investment</div>
+                               </div>
+                           </div>
+                           <div class="col-md-2">
+                               <div class="metric-card">
+                                   <div class="metric-value">${metrics.num_dividend_payments ? metrics.num_dividend_payments : '0'}</div>
+                                   <div class="metric-label">Number of Dividend Payments</div>
+                               </div>
+                           </div>
+                           <div class="col-md-2">
+                               <div class="metric-card">
+                                   <div class="metric-value">$${metrics.avg_dividend_per_payment ? metrics.avg_dividend_per_payment.toFixed(2) : '0.00'}</div>
+                                   <div class="metric-label">Avg Dividend per Payment</div>
+                               </div>
+                           </div>
+                           <div class="col-md-2">
+                               <div class="metric-card ${metrics.dividend_contribution_to_return > 0 ? 'positive' : ''}">
+                                   <div class="metric-value">${metrics.dividend_contribution_to_return ? metrics.dividend_contribution_to_return.toFixed(2) + '%' : '0.00%'}</div>
+                                   <div class="metric-label">Dividend Contribution to Return</div>
+                               </div>
+                           </div>
+                           <div class="col-md-2">
+                               <div class="metric-card ${metrics.effective_dividend_yield > 2 ? 'positive' : ''}">
+                                   <div class="metric-value ${metrics.effective_dividend_yield > 0 ? 'text-success' : ''}">${metrics.effective_dividend_yield ? metrics.effective_dividend_yield.toFixed(2) + '%' : '0.00%'}</div>
+                                   <div class="metric-label">Effective Dividend Yield</div>
+                                   <div class="metric-sublabel">(Annualized)</div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                </div>
+            `;
+        }
+        
+        // Helper function to get CSRF token
+        function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    // Initialize chart toggle functionality
+    function initializeChartToggle() {
+        // Handle chart toggle button clicks
+        $('.chart-btn').off('click').on('click', function() {
+            const $btn = $(this);
+            const chartType = $btn.data('chart');
+            
+            // Update button states
+            $('.chart-btn').removeClass('active');
+            $btn.addClass('active');
+            
+            // Hide all chart containers
+            $('.portfolio-charts-wrapper .chart-container').hide();
+            
+            // Show the selected chart
+            let chartId;
+            switch(chartType) {
+                case 'portfolio':
+                    chartId = '#portfolio-chart-container';
+                    break;
+                case 'portfolio-dividends':
+                    chartId = '#portfolio-dividends-chart-container';
+                    break;
+                case 'dividends-bar':
+                    chartId = '#dividends-bar-chart-container';
+                    break;
+            }
+            
+            $(chartId).show();
+            
+            // Resize Plotly chart if it exists in the shown container
+            $(chartId + ' .js-plotly-plot').each(function() {
+                if (window.Plotly) {
+                    window.Plotly.Plots.resize(this);
+                }
+            });
+        });
+    }
+    
+    // Initialize period selection functionality
+    function initializePeriodSelection() {
+        // Set default dates from chart parameters
+        console.log('Initializing period selection with dates:', chartParameterDates);
+        if (chartParameterDates.start && chartParameterDates.end) {
+            // Ensure dates are in YYYY-MM-DD format
+            let startDate = chartParameterDates.start;
+            let endDate = chartParameterDates.end;
+            
+            // If dates contain time, extract just the date part
+            if (startDate.includes(' ')) {
+                startDate = startDate.split(' ')[0];
+            }
+            if (endDate.includes(' ')) {
+                endDate = endDate.split(' ')[0];
+            }
+            
+            $('#custom-start-date').val(startDate);
+            $('#custom-end-date').val(endDate);
+            console.log('Set custom dates to:', startDate, endDate);
+        }
+        
+        // Clear any previous validation states
+        $('#custom-start-date, #custom-end-date').removeClass('is-invalid');
+        
+        // Add keyboard support for date inputs
+        $('#custom-start-date, #custom-end-date').off('keydown').on('keydown', function(e) {
+            const $input = $(this);
+            const currentVal = $input.val();
+            
+            if (!currentVal || !isValidDateFormat(currentVal)) return;
+            
+            let date = new Date(currentVal);
+            let changed = false;
+            
+            switch(e.key) {
+                case 'ArrowUp':
+                    e.preventDefault();
+                    date.setDate(date.getDate() + 1);
+                    changed = true;
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    date.setDate(date.getDate() - 1);
+                    changed = true;
+                    break;
+                case 'PageUp':
+                    e.preventDefault();
+                    date.setMonth(date.getMonth() + 1);
+                    changed = true;
+                    break;
+                case 'PageDown':
+                    e.preventDefault();
+                    date.setMonth(date.getMonth() - 1);
+                    changed = true;
+                    break;
+            }
+            
+            if (changed) {
+                const newDateStr = date.toISOString().split('T')[0];
+                $input.val(newDateStr).trigger('change');
+            }
+        });
+        
+        // Add Enter key support to submit dates
+        $('#custom-start-date, #custom-end-date').off('keypress').on('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                $(this).trigger('blur'); // Trigger blur to validate and update
+            }
+        });
+        
+        // Handle period type change
+        $('input[name="period-type"]').off('change').on('change', function() {
+            if ($(this).val() === 'custom') {
+                $('.custom-period-inputs').show();
+            } else {
+                $('.custom-period-inputs').hide();
+                // Reset to overall metrics
+                updateMetricsForPeriod(null, null);
+            }
+        });
+        
+        // Handle custom date changes (both change and input events for typing support)
+        $('#custom-start-date, #custom-end-date').off('change input blur').on('change input blur', function(e) {
+            // Validate and format the date
+            const $input = $(this);
+            let dateValue = $input.val();
+            
+            // If user is still typing, don't validate yet (unless it's blur or change event)
+            if (e.type === 'input' && dateValue.length < 10) {
+                return;
+            }
+            
+            // Validate date format
+            if (dateValue && !isValidDateFormat(dateValue)) {
+                // Try to parse common formats and convert to YYYY-MM-DD
+                dateValue = parseAndFormatDate(dateValue);
+                if (dateValue) {
+                    $input.val(dateValue);
+                } else {
+                    // Invalid date - highlight the field
+                    $input.addClass('is-invalid');
+                    return;
+                }
+            }
+            
+            $input.removeClass('is-invalid');
+            
+            const startDate = $('#custom-start-date').val();
+            const endDate = $('#custom-end-date').val();
+            
+            if (startDate && endDate && isValidDateFormat(startDate) && isValidDateFormat(endDate)) {
+                if (startDate <= endDate) {
+                    updateMetricsForPeriod(startDate, endDate);
+                } else {
+                    console.warn('Start date must be before or equal to end date');
+                    $input.addClass('is-invalid');
+                }
+            }
+        });
+    }
+    
+    // Validate date format (YYYY-MM-DD)
+    function isValidDateFormat(dateStr) {
+        if (!dateStr) return false;
+        const regex = /^\d{4}-\d{2}-\d{2}$/;
+        if (!regex.test(dateStr)) return false;
+        
+        // Check if it's a valid date
+        const date = new Date(dateStr);
+        const timestamp = date.getTime();
+        
+        // Check if date is valid and within reasonable bounds (1900-2100)
+        if (!timestamp || isNaN(timestamp)) return false;
+        
+        const year = date.getFullYear();
+        if (year < 1900 || year > 2100) return false;
+        
+        // Check if the date string matches what was parsed
+        const formatted = date.toISOString().split('T')[0];
+        return formatted === dateStr;
+    }
+    
+    // Parse various date formats and return YYYY-MM-DD
+    function parseAndFormatDate(dateStr) {
+        if (!dateStr) return null;
+        
+        // Remove any extra spaces
+        dateStr = dateStr.trim();
+        
+        // Try different formats
+        let date = null;
+        
+        // Format: MM/DD/YYYY or MM-DD-YYYY
+        let match = dateStr.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+        if (match) {
+            const month = match[1].padStart(2, '0');
+            const day = match[2].padStart(2, '0');
+            const year = match[3];
+            date = new Date(`${year}-${month}-${day}`);
+        }
+        
+        // Format: DD/MM/YYYY or DD-MM-YYYY (European format)
+        if (!date || isNaN(date.getTime())) {
+            match = dateStr.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+            if (match) {
+                const day = match[1].padStart(2, '0');
+                const month = match[2].padStart(2, '0');
+                const year = match[3];
+                date = new Date(`${year}-${month}-${day}`);
+            }
+        }
+        
+        // Format: YYYY/MM/DD or YYYY-MM-DD
+        if (!date || isNaN(date.getTime())) {
+            match = dateStr.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/);
+            if (match) {
+                const year = match[1];
+                const month = match[2].padStart(2, '0');
+                const day = match[3].padStart(2, '0');
+                date = new Date(`${year}-${month}-${day}`);
+            }
+        }
+        
+        // Format: MMM DD, YYYY (e.g., Jan 15, 2024)
+        if (!date || isNaN(date.getTime())) {
+            date = new Date(dateStr);
+        }
+        
+        // Validate the parsed date
+        if (date && !isNaN(date.getTime())) {
+            const year = date.getFullYear();
+            if (year >= 1900 && year <= 2100) {
+                // Return in YYYY-MM-DD format
+                return date.toISOString().split('T')[0];
+            }
+        }
+        
+        return null;
+    }
+    
+    // Update metrics for a specific period
+    function updateMetricsForPeriod(startDate, endDate) {
+        if (!backtestSessionKey) {
+            console.error('No backtest session available');
+            return;
+        }
+        
+        console.log('Updating metrics for period:', startDate, 'to', endDate);
+        
+        // Show loading state
+        $('.metrics-section').css('opacity', '0.5');
+        
+        // Send request to backend to recalculate metrics
+        $.ajax({
+            url: '/backtesting/update-metrics/',
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            data: JSON.stringify({
+                session_key: backtestSessionKey,
+                start_date: startDate,
+                end_date: endDate
+            }),
+            contentType: 'application/json',
+            success: function(response) {
+                if (response.success) {
+                    // Update only the metrics section
+                    const metricsHtml = createMetricsCards(response.metrics);
+                    $('.metrics-section').replaceWith(metricsHtml);
+                    
+                    // Re-initialize period selection after updating
+                    initializePeriodSelection();
+                    
+                    // Restore period selection state
+                    if (startDate && endDate) {
+                        $('#period-custom').prop('checked', true);
+                        $('.custom-period-inputs').show();
+                        $('#custom-start-date').val(startDate);
+                        $('#custom-end-date').val(endDate);
+                    }
+                } else {
+                    console.error('Error updating metrics:', response.error);
+                    // Restore opacity on error
+                    $('.metrics-section').css('opacity', '1');
+                    
+                    if (response.error.includes('Session expired')) {
+                        alert('Your backtest session has expired. Please run the backtest again.');
+                        // Clear the session key
+                        backtestSessionKey = null;
+                        chartParameterDates = {start: null, end: null};
+                    } else if (response.error.includes('Invalid date format')) {
+                        // Show validation error
+                        $('#custom-start-date, #custom-end-date').addClass('is-invalid');
+                        alert('Invalid date format. Please use YYYY-MM-DD format (e.g., 2024-01-15)');
+                    } else if (response.error.includes('Date out of valid range')) {
+                        $('#custom-start-date, #custom-end-date').addClass('is-invalid');
+                        alert('Dates must be between year 1900 and 2100.');
+                    } else {
+                        alert('Error updating metrics: ' + response.error);
+                    }
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX error:', error);
+                // Restore opacity on error
+                $('.metrics-section').css('opacity', '1');
+                alert('Error connecting to server. Please try again.');
+            }
+        });
+    }
+    
+    // Add window resize handler for Plotly charts
+    let resizeTimeout;
+    $(window).on('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(function() {
+            // Resize all visible Plotly charts in backtest results
+            $('#backtest-results-content:visible .js-plotly-plot').each(function() {
+                if (window.Plotly) {
+                    window.Plotly.Plots.resize(this);
+                }
+            });
+        }, 250);
+    });
+        }); // End jQuery function
+    }, 100); // End setTimeout
+}); // End window load
+</script>
+
+<!-- CSS for Drawdown Cards -->
+<style>
+.drawdown-card {
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.drawdown-card:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.drawdown-card .card-body {
+    padding: 15px;
+}
+
+/* Ensure charts fill their containers */
+.drawdown-card #dd-overall-chart,
+.drawdown-card #dd-trade-chart {
+    width: 100%;
+}
+
+/* Additional styling for results container */
+.backtest-results-container {
+    padding: 0;
+}
+
+.portfolio-chart-section {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .drawdown-card {
+        margin-bottom: 15px;
+    }
+}
+
+/* Period Selection Styles */
+.period-selection-container {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #2d3238;
+}
+
+.period-selection-container .btn-outline-secondary {
+    border-color: #495057;
+    color: #adb5bd;
+}
+
+.period-selection-container .btn-check:checked + .btn-outline-secondary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
+
+.custom-period-inputs {
+    display: inline-flex;
+    transition: opacity 0.3s ease;
+}
+
+.custom-period-inputs input[type="date"] {
+    background-color: #212529;
+    border: 1px solid #495057;
+    color: white;
+    /* Allow typing in date fields */
+    -webkit-user-modify: read-write-plaintext-only;
+}
+
+.custom-period-inputs input[type="date"]:focus {
+    background-color: #212529;
+    border-color: #0d6efd;
+    color: white;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.custom-period-inputs input[type="date"].is-invalid {
+    border-color: #dc3545;
+}
+
+.custom-period-inputs input[type="date"].is-invalid:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+/* Style the calendar picker icon */
+.custom-period-inputs input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.8);
+    cursor: pointer;
+}
+
+/* Format hint text */
+.custom-period-inputs small {
+    opacity: 0.7;
+}
+
+/* Metric Cards Styling */
+.metrics-section {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.metrics-section h5 {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.metric-card {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 20px 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    height: 100%;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.metric-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.metric-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.metric-sublabel {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 2px;
+}
+
+/* Positive/Negative indicators */
+.metric-card.positive .metric-value {
+    color: #00ff88;
+}
+
+.metric-card.negative .metric-value {
+    color: #ff4444;
+}
+
+/* Specific metric card styles */
+.metric-card:has(.metric-label:contains("Win Rate")) .metric-value,
+.metric-card:has(.metric-label:contains("Profit Factor")) .metric-value {
+    font-size: 28px;
+}
+
+/* Row spacing */
+.metrics-section .row {
+    margin-bottom: 0;
+}
+
+.metrics-section .col-md-2 {
+    margin-bottom: 15px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .metrics-section .col-md-2 {
+        flex: 0 0 33.333333%;
+        max-width: 33.333333%;
+    }
+}
+
+@media (max-width: 768px) {
+    .metrics-section .col-md-2 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .metric-value {
+        font-size: 20px;
+    }
+    
+    .metric-label {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 576px) {
+    .metrics-section .col-md-2 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* Chart Toggle Button Styles */
+.chart-toggle-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.chart-btn {
+    padding: 8px 16px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #adb5bd;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: none;
+    letter-spacing: 0.5px;
+}
+
+.chart-btn:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.chart-btn.active {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
+
+.chart-btn:active {
+    transform: translateY(1px);
+}
+
+/* Chart Container Styles */
+.portfolio-charts-wrapper {
+    position: relative;
+}
+
+.chart-container {
+    width: 100%;
+}
+
+/* Responsive adjustments for chart buttons */
+@media (max-width: 768px) {
+    .chart-toggle-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .chart-btn {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+    
+    .card-header.d-flex {
+        flex-direction: column;
+        align-items: center !important;
+        gap: 10px;
+    }
+    
+    .card-header h5 {
+        margin-bottom: 10px;
+    }
+}
+</style>
+
+
+
+

@@ -1,0 +1,24 @@
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/to_host/django-app-v4
+
+ExecStart=/home/ubuntu/to_host/django-app-v4/venv/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/run/gunicorn.sock \
+          core.wsgi:application
+
+ExecStart=/home/ubuntu/env/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/run/gunicorn.sock \
+          polygon_trader.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,42 @@
+version: 0.0
+os: linux
+
+files:
+  - source: /
+    destination: /home/ubuntu/django-app-v4
+
+permissions:
+  - object: /home/ubuntu/django-app-v4
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+    mode: 755
+    type:
+      - directory
+
+hooks:
+  BeforeInstall:
+    - location: scripts/clean_instance.sh
+      timeout: 300
+      runas: root
+  AfterInstall:
+    - location: scripts/instance_os_dependencies.sh
+      timeout: 300
+      runas: ubuntu
+    - location: scripts/python_dependencies.sh
+      timeout: 300
+      runas: ubuntu
+    - location: scripts/gunicorn.sh
+      timeout: 300
+      runas: ubuntu
+    - location: scripts/nginx.sh
+      timeout: 300
+      runas: ubuntu
+  ApplicationStop:
+    - location: scripts/stop_app.sh
+      timeout: 300
+      runas: ubuntu
+  ApplicationStart:
+    - location: scripts/start_app.sh
+      timeout: 300
+      runas: ubuntu

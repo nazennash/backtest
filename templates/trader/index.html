@@ -1,0 +1,793 @@
+{% extends 'base.html' %}
+
+{% block title %}Candlestick Chart Generator{% endblock %}
+
+{% block content %}
+<!-- App Description Card -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card app-description-card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <span class="app-title-gradient">Professional Trading Charts</span>
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="text-light mb-3">
+                    Generate professional-grade candlestick charts for stocks and market indices using real-time data from Polygon.io. 
+                    Perfect for technical analysis, market research, and trading insights.
+                </p>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6 class="text-primary mb-2">Chart Features</h6>
+                        <ul class="feature-list">
+                            <li>Real-time stock & index data</li>
+                            <li>Interactive candlestick charts</li>
+                            <li>Multiple timeframes (1s to monthly)</li>
+                            <li>Dark theme optimized for trading</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="text-success mb-2">Market Data</h6>
+                        <ul class="feature-list">
+                            <li>VIX, VVIX, SPX indices support</li>
+                            <li>Smart ticker autocomplete</li>
+                            <li>Zoom & pan chart functionality</li>
+                            <li>Professional market analysis</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="text-info mb-2">Pro Tips</h6>
+                        <ul class="feature-list">
+                            <li>Type to search for stocks or indices</li>
+                            <li>Use shorter ranges for high-frequency data</li>
+                            <li>Daily frequency works best for longer periods</li>
+                            <li>Charts are interactive - zoom and pan!</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Chart Parameters</h5>
+            </div>
+            <div class="card-body">
+                                    <div id="chart-controls">
+                        <!-- No more form - pure AJAX trading app -->
+                    
+                    <!-- Ticker Input with Autocomplete -->
+                    <div class="mb-3">
+                        <label for="{{ form.ticker.id_for_label }}" class="form-label">
+                            {{ form.ticker.label }}
+                        </label>
+                        <div class="ticker-input-container">
+                            <div class="input-group">
+                                {{ form.ticker }}
+                                <button type="button" class="btn btn-validate" id="validate-ticker-btn">
+                                    <span class="validate-text">Validate</span>
+                                    <span class="validate-spinner d-none">
+                                        <span class="spinner-border spinner-border-sm" role="status"></span>
+                                    </span>
+                                </button>
+                            </div>
+                            <div id="tickerSuggestions" class="ticker-suggestions" style="display: none;"></div>
+                        </div>
+                        <div id="ticker-validation" class="ticker-validation-text mt-2" style="display: none;">
+                            <div id="ticker-success" class="ticker-success-text">
+                                <span class="ticker-check">✓</span>
+                                <span id="ticker-display-name"></span>
+                            </div>
+                            <div id="ticker-error" class="ticker-error-text" style="display: none;">
+                                <span class="ticker-cross">✗</span>
+                                <span>Ticker symbol not found or unavailable</span>
+                            </div>
+                        </div>
+                        {% if form.ticker.errors %}
+                            <div class="text-danger">
+                                {% for error in form.ticker.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Start Date -->
+                    <div class="mb-3">
+                        <label for="{{ form.start_date.id_for_label }}" class="form-label">
+                            {{ form.start_date.label }}
+                        </label>
+                        {{ form.start_date }}
+                        {% if form.start_date.help_text %}
+                            <div class="form-text">{{ form.start_date.help_text }}</div>
+                        {% endif %}
+                        {% if form.start_date.errors %}
+                            <div class="text-danger">
+                                {% for error in form.start_date.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- End Date -->
+                    <div class="mb-3">
+                        <label for="{{ form.end_date.id_for_label }}" class="form-label">
+                            {{ form.end_date.label }}
+                        </label>
+                        {{ form.end_date }}
+                        {% if form.end_date.help_text %}
+                            <div class="form-text">{{ form.end_date.help_text }}</div>
+                        {% endif %}
+                        {% if form.end_date.errors %}
+                            <div class="text-danger">
+                                {% for error in form.end_date.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Frequency -->
+                    <div class="mb-3">
+                        <label for="{{ form.frequency.id_for_label }}" class="form-label">
+                            {{ form.frequency.label }}
+                        </label>
+                        {{ form.frequency }}
+                        {% if form.frequency.help_text %}
+                            <div class="form-text">{{ form.frequency.help_text }}</div>
+                        {% endif %}
+                        {% if form.frequency.errors %}
+                            <div class="text-danger">
+                                {% for error in form.frequency.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <!-- Data Source Indicator -->
+                        <div id="data-source-info" class="mt-2">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                <span id="data-source-text">Data source: FMP for all daily data (no date limitations)</span>
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Get Data Button - No Form Submission -->
+                    <div class="d-grid">
+                        <button type="button" class="btn btn-primary btn-lg" id="generate-chart-btn">
+                            <span class="btn-text">Get Data</span>
+                            <span class="btn-spinner d-none">
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                Getting Data...
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <!-- End chart controls -->
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="col-lg-9">
+        <!-- Tabbed Chart Container -->
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs" id="chartTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="ticker-tab" data-bs-toggle="tab" data-bs-target="#ticker-chart" type="button" role="tab" aria-controls="ticker-chart" aria-selected="true">
+                            <span id="ticker-tab-label">Ticker</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link disabled" id="vix-tab" data-bs-toggle="tab" data-bs-target="#vix-chart" type="button" role="tab" aria-controls="vix-chart" aria-selected="false">
+                            VIX
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link disabled" id="vvix-tab" data-bs-toggle="tab" data-bs-target="#vvix-chart" type="button" role="tab" aria-controls="vvix-chart" aria-selected="false">
+                            VVIX
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link disabled" id="data-tab" data-bs-toggle="tab" data-bs-target="#data-table" type="button" role="tab" aria-controls="data-table" aria-selected="false">
+                            Data Table
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="chartTabContent">
+                    <!-- Ticker Chart Tab -->
+                    <div class="tab-pane fade show active" id="ticker-chart" role="tabpanel" aria-labelledby="ticker-tab">
+                        <div id="ticker-chart-container" class="chart-container">
+                            <div class="d-flex align-items-center justify-content-center h-100">
+                                <div class="text-center">
+                                    <div class="spinner-border text-primary mb-3" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <h5 class="text-muted">Loading Chart...</h5>
+                                    <p class="text-muted">
+                                        Generating your trading chart with Redis-cached data...
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- VIX Chart Tab -->
+                    <div class="tab-pane fade" id="vix-chart" role="tabpanel" aria-labelledby="vix-tab">
+                        <div id="vix-chart-container" class="chart-container">
+                            <div class="d-flex align-items-center justify-content-center h-100">
+                                <div class="text-center">
+                                    <p class="text-muted">VIX chart will appear here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- VVIX Chart Tab -->
+                    <div class="tab-pane fade" id="vvix-chart" role="tabpanel" aria-labelledby="vvix-tab">
+                        <div id="vvix-chart-container" class="chart-container">
+                            <div class="d-flex align-items-center justify-content-center h-100">
+                                <div class="text-center">
+                                    <p class="text-muted">VVIX chart will appear here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Data Table Tab -->
+                    <div class="tab-pane fade" id="data-table" role="tabpanel" aria-labelledby="data-tab">
+                        <div id="data-table-container" class="table-container">
+                            <div class="d-flex align-items-center justify-content-center h-100">
+                                <div class="text-center">
+                                    <p class="text-muted">Data table will appear here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Section Separator -->
+<div class="row mt-5 mb-4">
+    <div class="col-12">
+        <hr class="section-separator">
+    </div>
+</div>
+
+<!-- Include Backtesting Section from Backtesting App -->
+<div id="backtesting-section">
+    {% include 'backtesting/backtesting_section.html' %}
+</div>
+
+
+
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    const tickerInput = document.getElementById('ticker-input');
+    const tickerSuggestions = document.getElementById('tickerSuggestions');
+    
+    // Track if ticker was validated by FMP autocomplete
+    let fmpValidatedTickers = new Map();
+    
+    // Function to display ticker name below input (success state)
+    function displayTickerName(ticker, name, market) {
+        let displayText;
+        
+        if (market === 'indices') {
+            displayText = `${ticker.toUpperCase()} ${name}`;
+        } else {
+            if (name && name !== `${ticker} Stock`) {
+                displayText = `${ticker.toUpperCase()} ${name}`;
+            } else {
+                displayText = `${ticker.toUpperCase()} Stock`;
+            }
+        }
+        
+        $('#ticker-display-name').text(displayText);
+        $('#ticker-error').hide();
+        $('#ticker-success').show();
+        $('#ticker-validation').show().addClass('show');
+    }
+    
+    // Function to display ticker error
+    function displayTickerError() {
+        $('#ticker-success').hide();
+        $('#ticker-error').show();
+        $('#ticker-validation').show().addClass('show');
+    }
+    
+    // Function to hide ticker name display
+    function hideTickerName() {
+        console.log('Hiding ticker validation display');
+        $('#ticker-validation').removeClass('show');
+        setTimeout(() => {
+            $('#ticker-validation').hide();
+            $('#ticker-success').hide();
+            $('#ticker-error').hide();
+        }, 300);
+    }
+    
+    // Function to force show success state (for FMP validated tickers)
+    function forceShowSuccess(ticker, name, market) {
+        hideTickerName(); // Clear any existing state first
+        setTimeout(() => {
+            displayTickerName(ticker, name, market);
+        }, 50);
+    }
+    
+    // Debounce function for search optimization
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+    
+    // Search for tickers with debouncing
+    const searchTickers = debounce(function(query) {
+        if (query.length < 1) {
+            tickerSuggestions.style.display = 'none';
+            hideTickerName();
+            return;
+        }
+        
+        fetch(`{% url "trader:search_tickers" %}?q=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.results && data.results.length > 0) {
+                    tickerSuggestions.innerHTML = '';
+                    data.results.forEach(item => {
+                        const div = document.createElement('div');
+                        div.className = 'ticker-suggestion-item';
+                        div.innerHTML = `
+                            <span class="ticker-suggestion-symbol">${item.symbol}</span>
+                            <span class="ticker-suggestion-exchange">${item.exchange}</span><br>
+                            <span class="ticker-suggestion-name">${item.name}</span>
+                        `;
+                        div.addEventListener('click', function() {
+                            // Clear any pending auto-validation timers
+                            clearTimeout(typingTimer);
+                            
+                            tickerInput.value = item.symbol;
+                            tickerSuggestions.style.display = 'none';
+                            
+                            // Store FMP validation - this ticker is confirmed valid
+                            const upperSymbol = item.symbol.toUpperCase();
+                            fmpValidatedTickers.set(upperSymbol, {
+                                symbol: item.symbol,
+                                name: item.name,
+                                exchange: item.exchange,
+                                validated: true
+                            });
+                            
+                            // Force clear any existing error state and show success immediately
+                            forceShowSuccess(item.symbol, item.name, 'stocks');
+                            
+                            console.log(`FMP validated ticker selected: ${upperSymbol}`);
+                        });
+                        tickerSuggestions.appendChild(div);
+                    });
+                    tickerSuggestions.style.display = 'block';
+                } else {
+                    tickerSuggestions.style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching ticker suggestions:', error);
+                tickerSuggestions.style.display = 'none';
+            });
+    }, 300); // 300ms debounce delay
+    
+    // Event listeners
+    tickerInput.addEventListener('input', function() {
+        const currentValue = this.value.trim().toUpperCase();
+        
+        // Clear FMP validation if user is typing something different
+        if (fmpValidatedTickers.size > 0) {
+            let shouldClear = true;
+            for (let [validatedTicker] of fmpValidatedTickers) {
+                if (validatedTicker.startsWith(currentValue) || currentValue.startsWith(validatedTicker.substring(0, 3))) {
+                    shouldClear = false;
+                    break;
+                }
+            }
+            if (shouldClear) {
+                fmpValidatedTickers.clear();
+                console.log('Cleared FMP validation cache - user typing new ticker');
+            }
+        }
+        
+        searchTickers(this.value);
+        hideTickerName(); // Hide validation while typing - no premature errors
+    });
+    
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!tickerInput.contains(e.target) && !tickerSuggestions.contains(e.target)) {
+            tickerSuggestions.style.display = 'none';
+        }
+    });
+    
+    // Function to validate ticker
+    function validateTicker() {
+        const ticker = $('#ticker-input').val().trim().toUpperCase();
+        
+        if (ticker.length === 0) {
+            hideTickerName();
+            return;
+        }
+        
+        // Check if this ticker was already validated by FMP autocomplete
+        if (fmpValidatedTickers.has(ticker)) {
+            const fmpData = fmpValidatedTickers.get(ticker);
+            console.log('Ticker already validated by FMP:', ticker);
+            displayTickerName(fmpData.symbol, fmpData.name, 'stocks');
+            return;
+        }
+        
+        // Show loading state on button
+        $('.validate-text').addClass('d-none');
+        $('.validate-spinner').removeClass('d-none');
+        $('#validate-ticker-btn').addClass('validating').prop('disabled', true);
+        
+        // Use the ticker details endpoint for manual validation
+        $.get('{% url "trader:ticker_details" %}', { ticker: ticker })
+            .done(function(data) {
+                if (data.name && data.name !== `${ticker} Stock` && data.name !== `${ticker} Index`) {
+                    displayTickerName(data.ticker, data.name, data.market);
+                } else {
+                    const knownIndices = ['VIX', 'VVIX', 'SPX', 'DJI', 'NDX', 'RUT', 'VXN', 'RVX', 'SKEW', 'VIX9D'];
+                    if (knownIndices.includes(ticker)) {
+                        displayTickerName(data.ticker, data.name, data.market);
+                    } else {
+                        displayTickerError();
+                    }
+                }
+            })
+            .fail(function() {
+                displayTickerError();
+            })
+            .always(function() {
+                // Reset button state
+                $('.validate-text').removeClass('d-none');
+                $('.validate-spinner').addClass('d-none');
+                $('#validate-ticker-btn').removeClass('validating').prop('disabled', false);
+            });
+    }
+    
+    // Handle validate button click
+    $('#validate-ticker-btn').on('click', function(e) {
+        e.preventDefault();
+        console.log('Validate button clicked');
+        validateTicker();
+    });
+    
+    // Handle Enter key in ticker input
+    $('#ticker-input').on('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            console.log('Enter key pressed');
+            
+            // Clear any pending auto-validation timer
+            clearTimeout(typingTimer);
+            
+            // Hide suggestions if showing
+            tickerSuggestions.style.display = 'none';
+            
+            validateTicker();
+        }
+    });
+    
+    // Auto-validate after user stops typing (delayed validation)
+    let typingTimer;
+    const typingDelay = 1500; // 1.5 seconds after user stops typing
+    
+    // Enhanced input handler for auto-validation
+    $('#ticker-input').on('input', function() {
+        clearTimeout(typingTimer); // Clear previous timer
+        const ticker = $(this).val().trim().toUpperCase();
+        
+        console.log(`User typing: "${ticker}"`);
+        
+        // Don't auto-validate if empty
+        if (ticker.length === 0) {
+            console.log('Empty input - no auto-validation');
+            return;
+        }
+        
+        // Don't auto-validate if already validated by FMP
+        if (fmpValidatedTickers.has(ticker)) {
+            console.log('Already validated by FMP - no auto-validation needed');
+            return;
+        }
+        
+        // Set timer to auto-validate after user stops typing
+        typingTimer = setTimeout(function() {
+            // Double-check the ticker value when timer fires
+            const currentTicker = $('#ticker-input').val().trim().toUpperCase();
+            if (currentTicker === ticker && currentTicker.length > 0) {
+                console.log('Auto-validating after typing delay:', currentTicker);
+                validateTicker();
+            }
+        }, typingDelay);
+    });
+    
+    // Handle manual validation when user leaves the field (but only if appropriate)
+    $('#ticker-input').on('blur', function() {
+        // Add small delay to allow for suggestion clicks
+        setTimeout(() => {
+            const ticker = $('#ticker-input').val().trim().toUpperCase();
+            console.log(`Blur event for ticker: ${ticker}`);
+            
+            // Clear any pending auto-validation timer
+            clearTimeout(typingTimer);
+            
+            // Don't validate if suggestions are visible (user might be selecting)
+            if (tickerSuggestions.style.display === 'block') {
+                console.log('Skipping blur validation - suggestions visible');
+                return;
+            }
+            
+            // Don't re-validate if already validated by FMP autocomplete
+            if (fmpValidatedTickers.has(ticker)) {
+                console.log('Skipping blur validation - already validated by FMP:', ticker);
+                return;
+            }
+            
+            // Only validate if user manually typed something and field is not empty
+            if (ticker.length > 0) {
+                console.log('Blur triggering validation for manually entered ticker:', ticker);
+                validateTicker();
+            }
+        }, 200); // 200ms delay to allow suggestion clicks to complete
+    });
+    
+    // Bloomberg-style AJAX chart generation
+    $('#generate-chart-btn').on('click', function() {
+        generateChart();
+    });
+    
+    // Get data via AJAX - no form submission
+    function generateChart() {
+        const btn = $('#generate-chart-btn');
+        const ticker = $('#ticker-input').val().trim();
+        const startDate = $('#start-date').val();
+        const endDate = $('#end-date').val();
+        const frequency = $('#frequency-select').val();
+        
+        // Validation
+        if (!ticker || ticker.length === 0) {
+            alert('Please enter a ticker symbol');
+            return;
+        }
+        if (!startDate || !endDate) {
+            alert('Please select start and end dates');
+            return;
+        }
+        
+        // Date validation for non-daily frequencies
+        if (frequency !== 'day') {
+            const minDate = '2023-02-01';
+            if (startDate < minDate) {
+                alert(`For ${frequency} frequency, the start date cannot be before February 2023.`);
+                $('#start-date').val(minDate);
+                return;
+            }
+        }
+        
+        // Show loading state
+        btn.prop('disabled', true);
+        btn.find('.btn-text').addClass('d-none');
+        btn.find('.btn-spinner').removeClass('d-none');
+        
+        // AJAX call to get data
+        fetch('{% url "trader:generate_chart_api" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                ticker: ticker,
+                start_date: startDate,
+                end_date: endDate,
+                frequency: frequency
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update ticker tab label
+                $('#ticker-tab-label').text(ticker);
+                
+                // Display ticker chart
+                if (data.chart_html_ticker) {
+                    $('#ticker-chart-container').html(data.chart_html_ticker);
+                }
+                
+                // Display VIX chart
+                if (data.chart_html_vix) {
+                    $('#vix-chart-container').html(data.chart_html_vix);
+                } else {
+                    $('#vix-chart-container').html('<div class="d-flex align-items-center justify-content-center" style="min-height: 600px;"><p class="text-muted">No VIX data available for this period</p></div>');
+                }
+                
+                // Display VVIX chart
+                if (data.chart_html_vvix) {
+                    $('#vvix-chart-container').html(data.chart_html_vvix);
+                } else {
+                    $('#vvix-chart-container').html('<div class="d-flex align-items-center justify-content-center" style="min-height: 600px;"><p class="text-muted">No VVIX data available for this period</p></div>');
+                }
+                
+                // Display data table
+                if (data.table_html) {
+                    $('#data-table-container').html(data.table_html);
+                }
+                
+                // Show cache status
+                if (data.cached) {
+                    console.log('Charts loaded from cache');
+                } else {
+                    console.log(`Fresh charts generated (${data.data_points} data points)`);
+                }
+                
+                // Enable all tabs
+                $('#vix-tab, #vvix-tab, #data-tab').removeClass('disabled');
+                
+                // Force chart resize after loading
+                setTimeout(() => {
+                    $('div[id*="candlestick-chart"]').each(function() {
+                        if (window.Plotly && window.Plotly.Plots) {
+                            window.Plotly.Plots.resize(this);
+                        }
+                    });
+                }, 100);
+            } else {
+                alert(data.error || 'Failed to generate charts');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Network error. Please try again.');
+        })
+        .finally(() => {
+            // Reset button state
+            btn.prop('disabled', false);
+            btn.find('.btn-text').removeClass('d-none');
+            btn.find('.btn-spinner').addClass('d-none');
+        });
+    }
+    
+    // Auto-validate QQQ and load default chart on page load
+    $(document).ready(function() {
+        // Ensure QQQ is set as default value
+        if (!$('#ticker-input').val() || $('#ticker-input').val().trim() === '') {
+            $('#ticker-input').val('QQQ');
+        }
+        
+        // Set max date to today for both date fields
+        const today = new Date().toISOString().split('T')[0];
+        $('#start-date').attr('max', today);
+        $('#end-date').attr('max', today);
+        
+        // Function to update date constraints based on frequency
+        function updateDateConstraints() {
+            const frequency = $('#frequency-select').val();
+            const $startDate = $('#start-date');
+            const $dataSourceText = $('#data-source-text');
+            
+            if (frequency !== 'day') {
+                // For non-daily frequencies, set min date to Feb 1, 2023
+                const minDate = '2023-02-01';
+                $startDate.attr('min', minDate);
+                
+                // Update data source indicator
+                $dataSourceText.text('Data source: Polygon (start date must be Feb 2023 or later)');
+                
+                // If current start date is before Feb 2023, update it
+                const currentStartDate = $startDate.val();
+                if (currentStartDate && currentStartDate < minDate) {
+                    $startDate.val(minDate);
+                    // Show a warning message
+                    const alertHtml = `
+                        <div class="alert alert-warning alert-dismissible fade show mt-2" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            For ${frequency} frequency, the start date cannot be before February 2023. 
+                            The date has been adjusted automatically.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    $startDate.parent().append(alertHtml);
+                }
+            } else {
+                // For daily frequency, remove the min date constraint
+                $startDate.removeAttr('min');
+                
+                // Update data source indicator
+                $dataSourceText.text('Data source: FMP for all daily data (no date limitations)');
+            }
+        }
+        
+        // Handle frequency change
+        $('#frequency-select').on('change', function() {
+            updateDateConstraints();
+        });
+        
+        // Initial date constraint setup
+        updateDateConstraints();
+        
+        // Auto-validate the default QQQ ticker
+        const defaultTicker = $('#ticker-input').val();
+        if (defaultTicker && defaultTicker.trim() === 'QQQ') {
+            // Pre-validate QQQ - it's a well-known ticker
+            fmpValidatedTickers.set('QQQ', {
+                symbol: 'QQQ',
+                name: 'Invesco QQQ Trust ETF',
+                exchange: 'NASDAQ',
+                validated: true
+            });
+            
+            // Show success immediately
+            setTimeout(() => {
+                forceShowSuccess('QQQ', 'Invesco QQQ Trust ETF', 'stocks');
+                console.log('Auto-validated default ticker: QQQ');
+            }, 100);
+        }
+        
+        // Small delay to ensure everything is loaded, then generate chart
+        setTimeout(function() {
+            generateChart();
+        }, 1500);
+    });
+    
+    // Handle tab switching and chart resizing
+    $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+        // Resize charts when tab becomes visible
+        setTimeout(() => {
+            const targetPane = $($(e.target).attr('data-bs-target'));
+            targetPane.find('div[id*="candlestick-chart"]').each(function() {
+                if (window.Plotly && window.Plotly.Plots) {
+                    window.Plotly.Plots.resize(this);
+                }
+            });
+        }, 50);
+    });
+    
+    // Handle strategy selection (from backtesting section)
+    $(document).on('change', 'input[name="strategy"]', function() {
+        const selectedStrategy = $(this).val();
+        
+        // Hide all parameter sections
+        $('.strategy-params').hide();
+        $('#no-strategy-selected').hide();
+        
+        // Show the selected strategy's parameters
+        $(`#strategy-${selectedStrategy}-params`).show();
+        
+        console.log(`Strategy ${selectedStrategy} selected`);
+    });
+});
+</script>
+{% endblock %}
