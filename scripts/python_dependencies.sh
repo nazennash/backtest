@@ -3,14 +3,16 @@
 # Install venv support if missing
 sudo apt install python3-venv -y
 
-# Create a venv
-python3 -m venv ~/myenv
+# If the venv doesn't exist, create it
+if [ ! -d "/home/ubuntu/env" ]; then
+    python3 -m venv /home/ubuntu/env
+fi
 
-# Activate it
-source ~/myenv/bin/activate
+# Activate the venv
+source /home/ubuntu/env/bin/activate
 
 # Upgrade pip inside venv
 pip install --upgrade pip
 
-
+# Install project dependencies
 pip install -r /home/ubuntu/django-app-v4/requirements.txt
