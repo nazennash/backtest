@@ -1,0 +1,4 @@
+run_command: |
+  python manage.py makemigrations
+  python manage.py migrate --noinput
+  gunicorn polygon_trader.wsgi:application
