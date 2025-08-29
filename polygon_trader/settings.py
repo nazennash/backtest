@@ -4,6 +4,9 @@ Django settings for polygon_trader project.
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -107,27 +110,29 @@ STORAGES = {
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Polygon API Key
-POLYGON_API_KEY = '0eDLkAJ8sib8iACYMzeA8ps2ZBoyo2r2'
+POLYGON_API_KEY = os.getenv('POLYGON_API_KEY')
 
 # Financial Modeling Prep API Key (for ticker search)
-FMP_API_KEY = 'f2IedVpstXz7qOfWiHl86s8BzVdQBMSC'
+FMP_API_KEY = os.getenv('FMP_API_KEY')
 
 # Redis Cache Configuration (with fallback)
 import os
 
 if os.getenv('REDIS_URL') or os.path.exists('redis_enabled.txt'):
     # Production Redis setup
+    
     CACHES = {
-        'default': {
-            'BACKEND': 'django_redis.cache.RedisCache',
-            'LOCATION': os.getenv('REDIS_URL', 'redis://127.0.0.1:6379/1'),
-            'OPTIONS': {
-                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": os.getenv("REDIS_URL"),
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
             },
-            'KEY_PREFIX': 'trading_app',
-            'TIMEOUT': 300,  # 5 minutes default
+            "KEY_PREFIX": "trading_app",
+            "TIMEOUT": 300,
         }
     }
+
 else:
     # Development fallback to database cache
     CACHES = {
