@@ -124,7 +124,7 @@ if os.getenv('REDIS_URL') or os.path.exists('redis_enabled.txt'):
     CACHES = {
         "default": {
             "BACKEND": "django_redis.cache.RedisCache",
-            'LOCATION': os.getenv('REDIS_URL', 'redis://3.141.18.247:6379/1','redis://127.0.0.1:6379/1'),
+            'LOCATION': os.getenv('REDIS_URL', 'redis://3.141.18.247:6379/1'),
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             },
