@@ -62,7 +62,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'polygon_trader.wsgi.application'
 
-# Database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -130,16 +129,16 @@ if os.getenv('REDIS_URL') or os.path.exists('redis_enabled.txt'):
     # Production Redis setup
     
     CACHES = {
-        "default": {
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": os.getenv("REDIS_URL", "redis://nash@localhost:6379/1"),
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            },
-            "KEY_PREFIX": "trading_app",
-            "TIMEOUT": 300,
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
+}
+
+
 
 else:
     # Development fallback to database cache
