@@ -122,14 +122,15 @@ if os.getenv('REDIS_URL') or os.path.exists('redis_enabled.txt'):
     # Production Redis setup
     
     CACHES = {
-        "default": {
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://3.141.18.247/:6379/1",  # host:port/db
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            }
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://:nash@127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
+}
+
 
 
 else:
